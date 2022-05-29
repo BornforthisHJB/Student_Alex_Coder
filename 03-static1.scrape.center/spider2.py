@@ -1,3 +1,24 @@
+"""
+1. requests crawls every movie on every page, basic information to specific details.
+2. pyquery and regular expressions to find the name, title/cover, category,
+release date, rating, and summary of each movie.
+3. All of this crawled data will be stored in mongodb
+4. Use multiprocessing to speed up crawling process
+"""
+
+# modify website url to send requests to all pages through 1-10 on this website to parse data
+# parse nested url of movie summary from specific movie html
+import requests
+from requests.exceptions import RequestException
+from bs4 import BeautifulSoup
+from pyquery import PyQuery as pq
+from urllib.parse import urljoin
+from multiprocessing import Pool
+
+TOTAL_PAGE = 10
+BASE_URL="https://static1.scrape.center"
+# default_request = requests.get(BASE_URL, headers="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36")
+
 class Scr1(object):
     def __init__(self):
         self.headers = {
