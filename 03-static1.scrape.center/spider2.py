@@ -35,8 +35,8 @@ class Scr1(object):
         except RequestException as e:
             return e
 
-    def parse(self):
-        html = self.requests("https://static1.scrape.center/")
+    def parse(self, url):
+        html = self.requests(url)
         soup = BeautifulSoup(html, "lxml")
         movie_title = soup.find('a', class_="name").text
         # for item in soup.find('div', class_="el-row"):
@@ -58,13 +58,14 @@ class Scr1(object):
         return self.requests(index_url)
 
     def parse_index(self, html):
+        r_url = []
         doc = pq(html)
         links = doc(".el-card .name")
         for link in links.items():
             href = link.attr("href")
             detail_url = urljoin(BASE_URL, href)
-            return detail_url
-
+            r_url.append(detail_url)
+        return r_url
     def scrape_details(self, url):
         return self.requests(url)
 
@@ -75,9 +76,12 @@ class Scr1(object):
 
 
     def main(self):
-        run_result = self.parse()
+        # run_result = self.parse()
         for page in range(1, TOTAL_PAGE + 1):
             index_html = self.scrape_index(page)
+            print(index_html)
+            r = self.parse_index(index_html)
+            print(r)
         #     detail_urls = self.parse_index()
         #     # print(detail_urls)
         #     for url in detail_urls:
